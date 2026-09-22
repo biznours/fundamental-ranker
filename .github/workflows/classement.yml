@@ -39,12 +39,12 @@ jobs:
 
       - name: Enregistrer le classement s'il a changé
         run: |
-          if git diff --quiet -- classement/classement.json; then
-            echo "Classement inchangé, rien à enregistrer."
-            exit 0
-          fi
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
           git add classement/classement.json
+          if git diff --cached --quiet; then
+            echo "Classement inchangé, rien à enregistrer."
+            exit 0
+          fi
           git commit -m "Classement fondamental du $(date -u +%Y-%m-%d)"
           git push
